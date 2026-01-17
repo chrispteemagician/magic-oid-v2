@@ -1,4 +1,6 @@
 [build]
+  # This tells Netlify: "My website files are in the current folder, not 'public'"
+  publish = "." 
   functions = "netlify/functions"
 
 [dev]
