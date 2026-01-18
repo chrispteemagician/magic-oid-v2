@@ -1,122 +1,68 @@
 exports.handler = async (event) => {
-  // 1. Safety Check
-  if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+  // 1. CORS & Preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Methods": "POST, OPTIONS"
+      },
+      body: ""
+    };
+  }
 
   try {
-    const { image, mode } = JSON.parse(event.body);
+    const { image, mode, proMode } = JSON.parse(event.body);
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY;
-    if (!apiKey) throw new Error("Missing API Key");
+    if (!apiKey) return { statusCode: 500, body: JSON.stringify({ error: "Server missing API Key." }) };
 
-    // --- 2. THE PERSONAS (V2: NO WAFFLE EDITION) ---
-    const systemPrompt = mode === 'roast' 
-      ? `You are "Roast-Oid", channeling the chaotic energy of 'Chris Doc Strange'. 
-         
-         TASK: Deliver a devastating ONE-LINER roast based on the photo.
-         
-         THE FORMULA (Combine these):
-         1. **The Lookalike:** Identify a celebrity or famous magician they vaguely resemble.
-         2. **The Tragic Twist:** Describe them as the "failed magician version" of that celebrity.
-         
-         EXAMPLES:
-         - "You look like a damp Liberace that laps coins in thumbtips."
-         - "It's giving George Clooney if he gave up acting to sell Svengali decks at a car boot sale."
-         - "You resemble Harry Potter, but with more chin and less talent."
-         
-         CONSTRAINTS:
-         - **DO NOT** start with "Right then", "Okay", "Let's see", "Good heavens", or "Oh my".
-         - START IMMEDIATELY with the insult.
-         - MAX 2 SENTENCES.
-         - British spelling/slang.
-         - NO questions.`
+    // 3. Persona: The Oracle Droid
+    const systemPrompt = `
+      You are Magic-Oid (The Oracle Droid). You serve the High Mage Chris P Tee.
       
-      : `You are "Magic-Oid", channeling 'Chris P Tee'. Kind, supportive, knowledgeable.
-         
-         TASK: Identify this magic item/prop.
-         
-         STRUCTURE:
-         1. 🔮 THE GEAR: Exact Name, Creator, Maker.
-         2. ✨ THE MAGIC: What the audience sees (Punchy description).
-         3. 💰 THE DAMAGE: Valuation (Vintage vs Modern). Honest but kind.
-         4. 📚 LEVEL UP: Suggest a specific book or complementary trick.
-         
-         CRITICAL - THE AMAZON CLOSE:
-         End with a recommendation link formatted EXACTLY like this:
-         [👉 Grab the [Insert Item/Book Name] on Amazon](https://www.amazon.co.uk/s?k=[Insert+Search+Terms+Here]&tag=chrisptee-21)
-         
-         CONSTRAINTS:
-         - **DO NOT** start with "Right then", "Right", or "Let's have a look". Just start with the answer.
-         - Do NOT expose the secret method. Keep the mystery alive.`;
+      **YOUR PERSONALITY:**
+      - You are mystical, precise, and respectful of the Magician's Code (don't reveal methods).
+      - **Vocabulary:** "Gaff", "Gimmick", "Provenance", "Blackpool".
+      - **Tone:** Theatrical and all-knowing.
 
-    // --- 3. AUTO-DISCOVERY (The Skeleton Key) ---
-    const listUrl = `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`;
-    const listResp = await fetch(listUrl);
-    
-    let availableModels = ["models/gemini-1.5-flash", "models/gemini-1.5-pro", "models/gemini-pro"];
-    
-    if (listResp.ok) {
-      const listData = await listResp.json();
-      availableModels = listData.models
-        .filter(m => m.supportedGenerationMethods.includes("generateContent"))
-        .map(m => m.name)
-        .sort((a, b) => b.localeCompare(a)); 
-    }
+      **THE TASK:** Analyze the magic prop/poster.
 
-    let lastError = "";
+      **MODE: '${mode}'**
+      ${mode === 'roast' 
+        ? "- ROAST MODE: Roast the prop. Call it 'plastic tat' or 'My First Magic Set'. Ask if they got it from a joke shop. Be savage." 
+        : "- IDENTIFY MODE: Identify the Effect, Creator, and Era. Explain the history."}
 
-    // --- 4. THE LOOP ---
-    for (const modelName of availableModels) {
-      if (modelName.includes("gemini-1.0-pro") && !modelName.includes("vision")) continue;
+      **PRO MODE IS: ${proMode ? "ON (Bridge Walker)" : "OFF (Apprentice)"}**
+      ${proMode 
+        ? "- PRO ENABLED: Provide estimated auction value in GBP (£), rarity (1-10), and deep history." 
+        : "- PRO DISABLED: Give basic ID. Then tease: 'To reveal the true market value and provenance, you must join the FeelFamous Family. Unlock Bridge Walker status.'"}
+    `;
 
-      console.log(`Trying model: ${modelName}...`);
-      
-      try {
-        const generateUrl = `https://generativelanguage.googleapis.com/v1beta/${modelName}:generateContent?key=${apiKey}`;
-        
-        const response = await fetch(generateUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{
-              parts: [
-                { text: systemPrompt },
-                { inlineData: { mimeType: "image/jpeg", data: image.data } }
-              ]
-            }],
-            // --- THE SAFETY PATCH (Allow the Roast) ---
-            safetySettings: [
-              { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
-              { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
-              { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
-              { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" }
-            ]
-          })
-        });
+    // 4. Call Gemini API
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [
+            { text: systemPrompt },
+            { inline_data: { mime_type: "image/jpeg", data: image.data } }
+          ]
+        }]
+      })
+    });
 
-        const data = await response.json();
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-        if (!response.ok) throw new Error(data.error?.message || `Status ${response.status}`);
-        
-        // Handle Safety Block Gracefully
-        if (data.candidates?.[0]?.finishReason === "SAFETY") {
-          return { statusCode: 200, body: JSON.stringify({ result: "🚫 **Roast Blocked:** The AI Safety Police stepped in! Doc Strange was too savage. Try a different face!" }) };
-        }
-
-        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (!text) throw new Error("Model returned empty response");
-
-        // Success!
-        return { statusCode: 200, body: JSON.stringify({ result: text }) };
-
-      } catch (err) {
-        console.log(`Failed on ${modelName}: ${err.message}`);
-        lastError = `Model ${modelName} failed: ${err.message}`;
-      }
-    }
-
-    throw new Error(`All models failed. Last error: ${lastError}`);
+    return {
+      statusCode: 200,
+      headers: { "Access-Control-Allow-Origin": "*" },
+      body: JSON.stringify({ result: text || " The crystal ball is cloudy..." })
+    };
 
   } catch (error) {
-    console.error("Fatal Error:", error);
-    return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
+    return { statusCode: 500, body: JSON.stringify({ error: "Spell fizzled (Server Error)." }) };
   }
 };
