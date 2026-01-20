@@ -3,28 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Magic-Oid | The Magic Village</title>
-    
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
-    <link rel="apple-touch-icon" href="logo.jpg">
-
-    <meta name="description" content="Identify magic tricks, props, and collectibles instantly with AI. Magic-Oid is the digital village for magicians to value items and connect with dealers.">
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Magic-Oid",
-      "url": "https://magic-oid.co.uk",
-      "applicationCategory": "UtilityApplication",
-      "genre": "Magic & Collectibles",
-      "operatingSystem": "All",
-      "description": "An AI-powered identification tool for magicians. Identify props, get valuations, and connect with the magic community.",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "GBP" },
-      "author": { "@type": "Person", "name": "Chris P Tee" },
-      "isPartOf": { "@type": "WebSite", "url": "https://feelfamous.co.uk", "name": "FeelFamous Network" }
-    }
-    </script>
-
+    <title>Magic-Oid | by Chris P Tee</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#7c3aed">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -32,7 +11,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #7c3aed; color: #333; padding-bottom: 40px; margin: 0; }
@@ -46,8 +25,20 @@
         .btn-coffee { background: #f59e0b; color: white; font-weight: bold; }
         .btn-share { background: #10b981; color: white; font-weight: bold; }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; backdrop-filter: blur(5px); }
-        .pro-badge { background: #fbbf24; color: #78350f; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-left: 8px; font-weight: 800; vertical-align: middle; }
         .funnel-box { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(4px); border-radius: 12px; padding: 10px; margin: 15px auto; max-w-sm; }
+        
+        /* VILLAGE LINKS STYLING */
+        .link-card { background: #f8fafc; padding: 0.75rem 1rem; border-radius: 16px; color: #1e293b; text-decoration: none; display: flex; align-items: center; transition: all 0.2s ease; margin-bottom: 0.75rem; border: 1px solid #e2e8f0; }
+        .link-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); background: white; border-color: #7c3aed; }
+        .emoji-icon { font-size: 1.5rem; margin-right: 1rem; width: 30px; text-align: center; }
+        .card-text { text-align: left; flex: 1; }
+        .card-name { display: block; font-weight: 800; font-size: 0.9rem; line-height: 1.2; }
+        .card-desc { display: block; font-size: 0.7rem; color: #64748b; }
+        .badge { font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; margin-left: 5px; color: white; vertical-align: middle; text-transform: uppercase; font-weight: bold; }
+        .badge-live { background: #10b981; }
+        .badge-soon { background: #f59e0b; }
+        .dealer-card { background: #fffbeb; border: 2px solid #fbbf24; }
+        .dealer-card .card-name { color: #b45309; }
     </style>
 </head>
 <body>
@@ -55,55 +46,26 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        const NudgeModal = ({ onClose, onShare }) => {
-            const [showQR, setShowQR] = useState(false);
-            const villageName = "The Magic Village"; 
-            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(window.location.href + "?ref=ambassador")}`;
-
-            return (
-                <div className="modal-overlay">
-                    <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center relative shadow-2xl transform transition-all scale-100">
-                        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full z-10">✕</button>
-                        
-                        {!showQR ? (
-                            <>
-                                <div className="text-5xl mb-4">✨</div>
-                                <h2 className="text-2xl font-extrabold text-slate-900 mb-1">Enter {villageName}</h2>
-                                <p className="text-slate-500 font-bold text-[10px] mb-4 uppercase tracking-widest">Active • Generous • Helpful • Kind</p>
-                                
-                                <div className="bg-slate-50 rounded-xl p-4 mb-6 text-left space-y-3 border border-slate-100">
-                                    <p className="text-xs text-slate-600 leading-relaxed"><i className="fa-solid fa-heart text-red-500 mr-2"></i><strong>No Noise. No Politics.</strong> Just us.</p>
-                                    <p className="text-xs text-slate-600 leading-relaxed"><i className="fa-solid fa-gem text-purple-500 mr-2"></i><strong>Early Adopters</strong> earn 2x Kudos on signup.</p>
-                                    <p className="text-xs text-slate-600 leading-relaxed"><i className="fa-solid fa-users text-blue-500 mr-2"></i><strong>Share your QR</strong> to earn Kudos for every visitor, coffee, or new villager.</p>
-                                </div>
-                                
-                                <div className="space-y-3">
-                                    <a href="https://feelfamous.co.uk/join" target="_blank" className="block w-full btn-primary py-4 rounded-xl flex items-center justify-center shadow-lg transform active:scale-95 transition"><span>Join Early Adopters (£4.95)</span></a>
-                                    <button onClick={() => setShowQR(true)} className="w-full bg-slate-800 text-white font-bold py-4 rounded-xl flex items-center justify-center hover:bg-slate-900 transition"><i className="fa-solid fa-qrcode mr-2"></i><span>My Ambassador Code</span></button>
-                                    <div className="flex gap-2">
-                                        <a href="https://buymeacoffee.com/chrispteemagician" target="_blank" className="flex-1 bg-yellow-400 text-yellow-900 font-bold py-3 rounded-xl text-xs flex items-center justify-center hover:bg-yellow-300 transition">☕ Buy Coffee</a>
-                                        <button onClick={onShare} className="flex-1 bg-green-500 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center hover:bg-green-600 transition"><i className="fa-solid fa-share mr-2"></i> Share App</button>
-                                    </div>
-                                </div>
-                            </>
-                        ) : (
-                            <div className="py-4 animate-fade-in">
-                                <h3 className="text-xl font-bold text-slate-800 mb-1">Your Passport</h3>
-                                <p className="text-[10px] text-slate-400 mb-4 uppercase tracking-wide">Share Anywhere • Earn Kudos</p>
-                                <div className="flex justify-center mb-4"><div className="p-4 bg-white border-2 border-dashed border-slate-300 rounded-2xl shadow-inner relative"><img src={qrUrl} alt="Ambassador QR Code" className="w-48 h-48" /><div className="absolute -bottom-3 -right-3 bg-purple-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">Early Adopter</div></div></div>
-                                <div className="bg-blue-50 p-3 rounded-lg mb-4 text-left space-y-1">
-                                    <p className="text-[10px] text-blue-800"><i class="fa-solid fa-eye mr-1"></i> <strong>Visitor:</strong> +10 Kudos</p>
-                                    <p className="text-[10px] text-blue-800"><i class="fa-solid fa-mug-hot mr-1"></i> <strong>Coffee:</strong> +100 Kudos</p>
-                                    <p className="text-[10px] text-blue-800"><i class="fa-solid fa-user-plus mr-1"></i> <strong>New Adopter:</strong> +500 Kudos & <strong>10 Gift Passes</strong></p>
-                                </div>
-                                <button onClick={() => { onShare(); onClose(); }} className="btn-primary py-3 rounded-xl w-full font-bold">Share Link Instead</button>
-                                <button onClick={() => setShowQR(false)} className="mt-4 text-xs text-slate-400 underline hover:text-slate-600">Back to Options</button>
-                            </div>
-                        )}
+        const NudgeModal = ({ onClose, onShare }) => (
+            <div className="modal-overlay">
+                <div className="bg-white rounded-3xl p-6 max-w-sm w-full text-center relative shadow-2xl">
+                    <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full">✕</button>
+                    <div className="text-5xl mb-4">✨</div>
+                    <h2 className="text-2xl font-extrabold text-purple-900 mb-1">Unlock Pro Powers</h2>
+                    <p className="text-purple-600 font-bold text-sm mb-4">Become a Bridge Walker</p>
+                    <div className="bg-purple-50 rounded-xl p-4 mb-6 text-left space-y-2 border border-purple-100">
+                        <p className="text-xs text-gray-700"><i className="fa-solid fa-check text-green-500 mr-2"></i><strong>Cancel Anytime</strong> - No lock-ins.</p>
+                        <p className="text-xs text-gray-700"><i className="fa-solid fa-check text-green-500 mr-2"></i><strong>Rollover Credits</strong> - Never lose them.</p>
+                        <p className="text-xs text-gray-700"><i className="fa-solid fa-check text-green-500 mr-2"></i><strong>+5% Bonus</strong> for Early Adopters.</p>
+                    </div>
+                    <div className="space-y-3">
+                        <a href="https://feelfamous.co.uk/join" target="_blank" className="block w-full btn-primary py-4 rounded-xl flex items-center justify-center"><span>Join Early Adopter (£4.95/mo)</span></a>
+                        <a href="https://buymeacoffee.com/chrispteemagician" target="_blank" className="block w-full btn-coffee py-4 rounded-xl flex items-center justify-center"><span>☕ Buy Chris a Coffee</span><span className="ml-2 bg-white/20 text-[10px] px-2 py-0.5 rounded uppercase font-bold">24 Hrs Pro</span></a>
+                        <button onClick={onShare} className="w-full btn-share py-4 rounded-xl flex items-center justify-center"><i className="fa-solid fa-share-nodes mr-2"></i><span>Share App</span><span className="ml-2 bg-white/20 text-[10px] px-2 py-0.5 rounded uppercase font-bold">1 Free Scan</span></button>
                     </div>
                 </div>
-            );
-        };
+            </div>
+        );
 
         const App = () => {
             const [mode, setMode] = useState('identify');
@@ -166,18 +128,18 @@
                 <div className="min-h-screen flex flex-col">
                     <div className="app-header">
                         <div className="flex flex-col items-center mb-2">
-                            <img src="logo.jpg" className="w-24 h-24 rounded-2xl shadow-2xl mb-4 hover:scale-105 transition duration-300 border-2 border-white/20" alt="Magic-Oid Logo" />
-                            <h1 className="text-4xl font-extrabold tracking-tight mb-1">Magic-Oid</h1>
+                            <h1 className="text-4xl font-extrabold tracking-tight mb-1">
+                                Magic-Oid
+                                <span className="block text-lg font-normal mt-1 opacity-90">by Chris P Tee</span>
+                            </h1>
                             <p className="text-purple-200 text-xs font-bold uppercase tracking-widest">The One Image Detective Droid</p>
-                            <p className="text-white text-xs italic mt-1 opacity-90">"A Village for Magicians & Their Familiars"</p>
                         </div>
                         <div className="funnel-box">
                             <p className="text-xs text-white leading-relaxed"><strong>Free to use.</strong> Join the <span className="text-yellow-300 font-bold">FeelFamous Family</span> to unlock <span className="bg-yellow-400 text-purple-900 text-[10px] px-1 rounded font-bold">PRO</span> features across <strong>ALL</strong> Oid Apps.</p>
                         </div>
                         <div className="flex flex-wrap gap-2 justify-center mt-2">
-                            <a href="dealers.html" className="bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center border border-white/10">🤝 Dealers</a>
+                            <a href="founders.html" className="bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center border border-white/10">🤝 Dealers</a>
                             <a href="mailto:chris@chrisptee.co.uk?subject=Collaboration%20Request" className="bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center border border-white/10">📩 Email</a>
-                            <a href="https://wa.me/447976884254" className="bg-green-500/80 hover:bg-green-500 text-white px-3 py-2 rounded-lg text-xs font-bold transition flex items-center border border-white/10">💬 WhatsApp</a>
                             {!isPro && <button onClick={() => setShowNudge(true)} className="bg-gradient-to-r from-yellow-400 to-orange-500 text-purple-900 px-3 py-2 rounded-lg text-xs font-bold transition flex items-center shadow-lg transform active:scale-95">🔓 Unlock Pro</button>}
                         </div>
                     </div>
@@ -186,30 +148,73 @@
                             <button onClick={() => setMode('identify')} className={`flex-1 tab-btn ${mode==='identify' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-400'}`}>🔮 Identify</button>
                             <button onClick={() => setMode('roast')} className={`flex-1 tab-btn ${mode==='roast' ? 'bg-white shadow-sm text-orange-500' : 'text-gray-400'}`}>🔥 Roast Me</button>
                         </div>
+                        
                         {!img ? (
                             <div>
-                                <h3 className="text-xl font-bold text-gray-800 text-center mb-4">{isPro ? 'Pro Mode Active' : 'Test Me • Fool Me • Valuate'}</h3>
+                                <h3 className="text-xl font-bold text-gray-800 text-center mb-4">{isPro ? 'Pro Mode Active' : 'Basic Identification'}</h3>
                                 <div className="upload-container">
                                     <div onClick={() => cameraRef.current.click()} className="upload-btn group"><div className="text-4xl mb-2 group-hover:scale-110 transition duration-300">📸</div><span className="text-xs font-bold text-gray-600">Camera</span></div>
                                     <div onClick={() => galleryRef.current.click()} className="upload-btn group"><div className="text-4xl mb-2 group-hover:scale-110 transition duration-300">🖼️</div><span className="text-xs font-bold text-gray-600">Gallery</span></div>
                                 </div>
-                                <p className="text-center text-[10px] text-gray-400">Don't know what it is? Ask. If I'm wrong, Roast Me!</p>
+                                <p className="text-center text-[10px] text-gray-400">Choose your source</p>
                             </div>
                         ) : (
                             <div className="space-y-6">
                                 <img src={img} className="w-full rounded-2xl shadow-lg border border-gray-100" />
                                 {loading && <div className="text-center py-12"><div className="animate-bounce text-5xl mb-4">🔮</div><p className="font-bold text-purple-600 text-lg">Consulting the Oracle...</p></div>}
                                 {analysis && <div className="bg-purple-50 p-6 rounded-2xl prose prose-purple text-sm max-w-none border border-purple-100 shadow-sm" dangerouslySetInnerHTML={{ __html: marked.parse(analysis) }} />}
-                                {!isPro && analysis && <div onClick={() => setShowNudge(true)} className="bg-slate-800 text-white p-5 rounded-2xl text-center cursor-pointer hover:bg-slate-700 transition shadow-xl"><div className="flex justify-center mb-2"><i class="fa-solid fa-lock text-xl text-yellow-400"></i></div><p className="font-bold text-lg mb-1">Valuation & Authenticity Locked</p><p className="text-xs text-slate-300 mb-3">Buy a coffee or share to spread community</p><div className="inline-block bg-white/20 text-xs px-4 py-1.5 rounded-full font-bold">Unlock Now</div></div>}
+                                {!isPro && analysis && <div onClick={() => setShowNudge(true)} className="bg-slate-800 text-white p-5 rounded-2xl text-center cursor-pointer hover:bg-slate-700 transition shadow-xl"><div className="flex justify-center mb-2"><i className="fa-solid fa-lock text-xl text-yellow-400"></i></div><p className="font-bold text-lg mb-1">Valuation & Authenticity Locked</p><p className="text-xs text-slate-300 mb-3">Buy a coffee or share to spread community</p><div className="inline-block bg-white/20 text-xs px-4 py-1.5 rounded-full font-bold">Unlock Now</div></div>}
                                 <button onClick={() => {setImg(null); setAnalysis('')}} className="btn-primary">Analyze Another</button>
                             </div>
                         )}
                         <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={handleScan} />
                         <input ref={galleryRef} type="file" accept="image/*" className="hidden" onChange={handleScan} />
-                        <div className="mt-16 text-center border-t border-gray-100 pt-8 pb-4">
-                            <p className="text-xs font-bold text-purple-900 mb-2 uppercase tracking-wide">We All Stand on the Shoulders of Giants</p>
-                            <p className="text-[10px] text-gray-400 italic mb-6">Paul Daniels • Jeff McBride • Eugene Burger • Wayne Dobson • Ali Bongo • Paul Zenon • Penn and Teller • Chris P Tee • Kreskin</p>
-                            <p className="text-[10px] text-gray-300 space-x-2">Part of the <a href="https://feelfamous.co.uk" className="text-purple-500 font-bold hover:underline">FeelFamous</a> Ecosystem • <a href="https://cannabin-oid.com" className="text-green-500 font-bold hover:underline" target="_blank">Cannabin-Oid</a></p>
+                        
+                        {/* --- THE VILLAGE DIRECTORY --- */}
+                        <div className="mt-12 pt-8 border-t border-gray-100">
+                            <h3 className="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Explore the Oid Village</h3>
+                            
+                            <a href="founders.html" className="link-card dealer-card">
+                                <span className="emoji-icon">🤝</span>
+                                <div className="card-text"><span className="card-name">Become a Founder Dealer</span><span className="card-desc">Join the Pollinators & Grow the Network</span></div>
+                            </a>
+                            <a href="https://cannabin-oid.com" className="link-card">
+                                <span className="emoji-icon">🌿</span>
+                                <div className="card-text"><span className="card-name">Cannabin-Oid <span className="badge badge-live">LIVE</span></span><span class="card-desc">Botanical Analysis (18+)</span></div>
+                            </a>
+                            <a href="https://radi-oid.co.uk" className="link-card opacity-75">
+                                <span className="emoji-icon">📻</span>
+                                <div className="card-text"><span className="card-name">Radi-Oid <span className="badge badge-soon">SOON</span></span><span class="card-desc">The Radio Identification App</span></div>
+                            </a>
+                            <a href="https://sail-oid.co.uk" className="link-card opacity-75">
+                                <span className="emoji-icon">⛵</span>
+                                <div className="card-text"><span className="card-name">Sail-Oid <span class="badge badge-soon">SOON</span></span><span class="card-desc">The Nautical Expert</span></div>
+                            </a>
+                            <a href="https://spicylister.com" className="link-card">
+                                <span className="emoji-icon">🌶️</span>
+                                <div className="card-text"><span className="card-name">SpicyLister <span class="badge badge-live">LIVE</span></span><span class="card-desc">AI-powered eBay listing generator</span></div>
+                            </a>
+                            <a href="https://meshcb.co.uk" className="link-card">
+                                <span className="emoji-icon">📡</span>
+                                <div className="card-text"><span className="card-name">MeshCB <span class="badge badge-live">LIVE</span></span><span class="card-desc">Radio & Mesh Network Education</span></div>
+                            </a>
+                            <a href="https://petertaylor.netlify.app" className="link-card">
+                                <span className="emoji-icon">🎤</span>
+                                <div className="card-text"><span className="card-name">Peter Taylor Tribute <span class="badge badge-live">LIVE</span></span><span class="card-desc">The Voice of Copperfield</span></div>
+                            </a>
+                            <a href="https://dnbsanta.com" className="link-card">
+                                <span className="emoji-icon">🎅</span>
+                                <div className="card-text"><span className="card-name">DnB Santa</span><span class="card-desc">Personalized Christmas Videos</span></div>
+                            </a>
+                             <a href="https://jackmingus.com" className="link-card">
+                                <span className="emoji-icon">🎮</span>
+                                <div className="card-text"><span className="card-name">Jack Mingus</span><span class="card-desc">Gaming & Streaming</span></div>
+                            </a>
+                        </div>
+                        
+                        <div className="mt-8 text-center pb-4">
+                            <p className="text-[10px] text-gray-400 italic mb-2">Paul Daniels • Jeff McBride • Eugene Burger • Wayne Dobson • Ali Bongo</p>
+                            <p className="text-[10px] text-gray-300">Part of the <a href="https://feelfamous.co.uk" className="text-purple-500 font-bold hover:underline">FeelFamous</a> Ecosystem</p>
                         </div>
                     </div>
                     {showNudge && <NudgeModal onClose={() => setShowNudge(false)} onShare={triggerShare} />}

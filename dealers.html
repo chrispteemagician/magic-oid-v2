@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Founder Dealer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>body { background: #7c3aed; font-family: 'Poppins', sans-serif; }</style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-purple-900">Founder Dealer Access</h1>
+            <p class="text-gray-500 text-sm mt-1">Establish your shop in the Magic-Oid Village.</p>
+        </div>
+
+        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6 text-center">
+            <p class="text-xs font-bold text-yellow-800 uppercase tracking-widest mb-1">Limited Time Founder Offer</p>
+            
+            <div class="text-4xl font-extrabold text-purple-900 my-2">£97 <span class="text-sm font-normal text-gray-500">/ year</span></div>
+            
+            <div class="text-xs text-red-500 font-bold mt-1">
+                Regular Price After Feb: <span class="line-through text-gray-400">£295/yr</span> or <span class="line-through text-gray-400">£49.95/month</span>
+            </div>
+            
+            <p class="text-[10px] text-gray-500 mt-2">Lock in this rate forever.</p>
+            <p class="text-xs font-bold text-green-600 mt-2 border-t border-yellow-200 pt-2">✅ 30-Day Money Back Guarantee</p>
+        </div>
+        
+        <form name="magicoid-dealer-founder" method="POST" data-netlify="true" action="/dealers/success">
+            <input type="hidden" name="form-name" value="magicoid-dealer-founder" />
+            
+            <label class="block text-xs font-bold text-gray-700 mb-1">Shop / Business Name</label>
+            <input type="text" name="business" class="w-full p-3 bg-gray-50 border rounded-lg mb-4" placeholder="e.g. Prestige Magic" required>
+            
+            <label class="block text-xs font-bold text-gray-700 mb-1">Email</label>
+            <input type="email" name="email" class="w-full p-3 bg-gray-50 border rounded-lg mb-6" required>
+            
+            <button class="w-full bg-purple-600 text-white font-bold py-4 rounded-xl shadow-lg hover:bg-purple-700 transition transform active:scale-95">
+                Secure Founder Rate (£97)
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-xs text-gray-400">
+            <p>Join the ecosystem. No social media noise. Secure. Private.</p>
+            <a href="/" class="underline mt-2 inline-block hover:text-purple-500">Return to App</a>
+        </div>
+    </div>
+</body>
+</html>

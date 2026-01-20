@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Founding Dealer | FeelFamous</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: white; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gso-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 2px solid #fbbf24; box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="relative overflow-hidden py-16 px-4 text-center">
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <span class="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-widest mb-4 inline-block shadow-lg shadow-red-500/30 animate-pulse">Valentine's Offer Ends Feb 14</span>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">Stop Burning Money on <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">Facebook Ads.</span></h1>
+            <p class="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">Get put in front of qualified buyers <strong>the exact second</strong> they are holding the prop you sell.</p>
+        </div>
+    </header>
+
+    <section class="container mx-auto px-4 mb-16">
+        <div class="gso-card rounded-3xl p-8 md:p-12 max-w-3xl mx-auto relative overflow-hidden text-center">
+            <div class="absolute top-0 right-0 bg-yellow-400 text-black font-extrabold px-6 py-2 rounded-bl-2xl">
+                FOUNDER DEAL
+            </div>
+
+            <h2 class="text-3xl font-bold mb-6">The "Village Elder" Package</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-8">
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <h3 class="font-bold text-yellow-400 mb-1"><i class="fa-solid fa-store mr-2"></i> Laser-Targeted Listing</h3>
+                    <p class="text-xs text-slate-400">You appear inside the specific App for your niche (Magic, Sailing, etc). No wasted traffic.</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <h3 class="font-bold text-green-400 mb-1"><i class="fa-solid fa-gift mr-2"></i> 100 x 7-Day Pro Passes</h3>
+                    <p class="text-xs text-slate-400">Gift these to your best customers. It's "Social Currency" to build loyalty. (Value: £500+)</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <h3 class="font-bold text-pink-400 mb-1"><i class="fa-solid fa-heart mr-2"></i> The Matchmaker</h3>
+                    <p class="text-xs text-slate-400">Our AI matches user scans to YOUR stock. "Don't buy a knock-off, buy from [Your Shop]."</p>
+                </div>
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <h3 class="font-bold text-blue-400 mb-1"><i class="fa-solid fa-users mr-2"></i> Growth Loop</h3>
+                    <p class="text-xs text-slate-400">Every time your QR code brings a Villager in, you earn <strong>10 MORE Passes</strong> to give away.</p>
+                </div>
+            </div>
+
+            <div class="bg-black/30 rounded-2xl p-6 mb-8 inline-block w-full max-w-xl">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4 opacity-50 grayscale">
+                    <div class="text-center">
+                        <p class="text-xs uppercase font-bold text-slate-500">Standard Price</p>
+                        <p class="text-2xl font-bold text-slate-400">£295<span class="text-sm">/yr</span></p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xs uppercase font-bold text-slate-500">End of March</p>
+                        <p class="text-2xl font-bold text-slate-400">£174<span class="text-sm">/yr</span></p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 border-t border-white/10 pt-6">
+                    <p class="text-sm font-bold text-red-400 uppercase tracking-widest mb-2 animate-pulse">VALENTINE'S SPECIAL (ENDS FEB 14)</p>
+                    <div class="text-6xl font-extrabold text-white mb-2">£97<span class="text-lg text-slate-400 font-normal">/year</span></div>
+                    <p class="text-xs text-slate-400">Lock in this price forever. Founding Badge Included.</p>
+                </div>
+            </div>
+
+            <a href="#apply" class="block w-full bg-yellow-400 hover:bg-yellow-300 text-black font-extrabold py-5 rounded-xl text-xl shadow-lg transition transform hover:scale-[1.02]">
+                Apply to Join Before Price Increase
+            </a>
+            <p class="text-xs text-slate-500 mt-4">100% Risk Free. If we don't approve your shop, you pay nothing.</p>
+        </div>
+    </section>
+
+    <section id="apply" class="container mx-auto px-4 pb-20 max-w-xl">
+        <h3 class="text-center text-2xl font-bold mb-6">Dealer Application</h3>
+        <form name="dealer-application" method="POST" data-netlify="true" class="space-y-4 bg-slate-800 p-6 rounded-2xl border border-slate-700">
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Store Name</label>
+                <input type="text" name="storeName" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white focus:border-yellow-400 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Website</label>
+                <input type="url" name="website" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white focus:border-yellow-400 focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-400 uppercase mb-1">Select Niche</label>
+                <select name="niche" class="w-full bg-slate-900 border border-slate-600 rounded-lg p-3 text-white">
+                    <option value="magic">Magic (Magic-Oid)</option>
+                    <option value="botany">Botany (Cannabin-Oid)</option>
+                    <option value="sailing">Sailing (Sail-Oid)</option>
+                    <option value="radio">Radio (MeshCB)</option>
+                </select>
+            </div>
+            <button type="submit" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-4 rounded-xl">Submit Application</button>
+        </form>
+    </section>
+
+</body>
+</html>
